@@ -63,7 +63,7 @@ public class JwtService {
 
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(key);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private Date extractExpiration(String token) {
