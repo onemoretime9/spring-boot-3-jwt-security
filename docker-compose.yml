@@ -1,0 +1,37 @@
+services:
+  backend:
+    build:
+      context: springboot-app
+    container_name: springboot-app
+    ports:
+      - 8082:8082
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-db:5432/jwt_security
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=hanoi2020
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+    depends_on:
+      - database
+    networks:
+      - springboot-postgres
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  database:
+    image: postgres
+    container_name: springboot-db
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - springboot-postgres
+    environment:
+      - POSTGRES_DB=jwt_security
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=hanoi2020
+    expose:
+      - 5432
+volumes:
+  db-data:
+networks:
+  springboot-postgres:
